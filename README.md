@@ -3,7 +3,7 @@ A simple tool to list all directories in pwd and cd into them with just a number
 
 ## Installation Guide
 
-Simply run the following commands to install the tool-
+Simply copy and paste the following commands to install the tool-
 ```
 git clone https://github.com/AviusX/linux-navigator/
 cd linux-navigator
@@ -21,7 +21,7 @@ After installation, simple run `nav` in any directory to view all the directorie
 
 ## Uninstallation
 
-To uninstall, run the following commands-
+To uninstall, copy and paste the following commands-
 ```
 cd ~/Navigator
 . ./uninstall.sh
