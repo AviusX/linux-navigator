@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-if [[ -e ~/.zshrc ]] then
+if [[ -e ~/.zshrc ]]; then
 
-    if [[ -e ~/.bashrc ]] && [[ $SHELL =~ 'zsh' ]] then
+    if [[ -e ~/.bashrc ]] && [[ $SHELL =~ 'zsh' ]]; then
         sed -i "/^alias nav/d" ~/.zshrc
         sed -i "/^alias nav/d" ~/.bashrc
         source ~/.zshrc
 
-    elif [[ -e ~/.bashrc ]] && [[ ! $SHELL =~ 'zsh' ]] then
+    elif [[ -e ~/.bashrc ]] && [[ ! $SHELL =~ 'zsh' ]]; then
         sed -i "/^alias nav/d" ~/.zshrc
         sed -i "/^alias nav/d" ~/.bashrc
         source ~/.bashrc
