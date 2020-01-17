@@ -25,5 +25,4 @@ else
 fi
 
 rm ~/Navigator/install.sh*
-rm ~/Navigator/.install.sh.un~
 cd ~
