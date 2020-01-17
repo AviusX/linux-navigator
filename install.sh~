@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 chmod +x navigator.sh
-cp -rv $(pwd) ~/ && mv ~/linux-navigator ~/Navigator
+cp -rv $(pwd) ~/ && mv ~/linux-navigator Navigator
 
 if [[ -e ~/.zshrc ]] then
 
