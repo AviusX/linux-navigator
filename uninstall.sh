@@ -24,6 +24,6 @@ else
 
 fi
 
-rm -rv ~/Navigator
+rm -rfv ~/linux-navigator
 
 cd ~
