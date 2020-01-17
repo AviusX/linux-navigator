@@ -5,6 +5,7 @@ A simple tool to list all directories in pwd and cd into them with just a number
 
 Simply copy and paste the following commands to install the tool-
 ```
+cd ~/Downloads
 git clone https://github.com/AviusX/linux-navigator/
 cd linux-navigator
 . ./install.sh
