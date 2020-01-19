@@ -18,13 +18,14 @@ chmod +x ./install.sh
 
 ## How to use
 
-After installation, simple run `nav` in any directory to view all the directories in your pwd and enter the directory number to `cd` into that directory.
+1. After installation, simple run `nn` in any directory to view all the directories in your pwd.
+2. Enter the directory number to go into that directory.
+3. Once you reach your desired directory, enter any letter to stop.
 
 ## Uninstallation
 
-To uninstall, copy and paste the following commands-
+To uninstall, copy and paste the following command-
 ```
-cd ~/Navigator
-. ./uninstall.sh
+. ~/.navigator-home/uninstall.sh
 ```
 That's it! 
