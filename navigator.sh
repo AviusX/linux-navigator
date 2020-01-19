@@ -9,7 +9,7 @@ navigator() {
 
     echo -e "\n\e[100m\e[97m current directory \e[0m\e[90m\e[44m\e[0m\e[44m\e[30m$PWD \e[0m\e[34m\e[0m\n"
 
-    echo -e "\e[31mNo.\t\tDirectory\e[0m" > "$install_dir/.directories.txt"
+    echo -e "\e[31mNo.\t \tDirectory\e[0m" > "$install_dir/.directories.txt"
 
     local directories=$(find . -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort)
 
