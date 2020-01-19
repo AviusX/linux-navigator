@@ -5,24 +5,20 @@ install_dir="/home/$USER/.navigator-home"
 if [[ -e ~/.zshrc ]]; then
 
     if [[ -e ~/.bashrc ]] && [[ $SHELL =~ 'zsh' ]]; then
-        sed -i "/^alias nn/d" ~/.zshrc
-        sed -i "/^alias nn/d" ~/.bashrc
-        source ~/.zshrc
+        sed -i "/^alias.*navigator-home\/navigator.sh\"$/d" ~/.zshrc
+        sed -i "/^alias.*navigator-home\/navigator.sh\"$/d" ~/.bashrc
 
     elif [[ -e ~/.bashrc ]] && [[ ! $SHELL =~ 'zsh' ]]; then
-        sed -i "/^alias nn/d" ~/.zshrc
-        sed -i "/^alias nn/d" ~/.bashrc
-        source ~/.bashrc
+        sed -i "/^alias.*navigator-home\/navigator.sh\"$/d" ~/.zshrc
+        sed -i "/^alias.*navigator-home\/navigator.sh\"$/d" ~/.bashrc
 
     else
-        sed -i "/^alias nn/d" ~/.zshrc
-        source ~/.zshrc
+        sed -i "/^alias.*navigator-home\/navigator.sh\"$/d" ~/.zshrc
 
     fi
 
 else
-    sed -i "/^alias nn/d" ~/.bashrc
-    source ~/.bashrc
+    sed -i "/^alias.*navigator-home\/navigator.sh\"$/d" ~/.bashrc
 
 fi
 
