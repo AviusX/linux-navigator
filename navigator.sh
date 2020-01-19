@@ -31,7 +31,7 @@ navigator() {
     cat "$install_dir/.directories.txt" | column -t -s $'\t'
     rm "$install_dir/.directories.txt"
     
-    echo "Enter the directory number- " && read -r number
+    echo "Enter the directory number (s to stop)- " && read -r number
 
     # Entering any letter(s) stops the script, leaving the user in the last chosen directory.
     if [[ $number =~ [A-Za-z]+ ]]; then
