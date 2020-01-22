@@ -36,7 +36,7 @@ chmod +x ./install.sh
    2. Navigate the same way as you would with general usage.
    
   #### Viewing help
-   1. Type `nn --help` to view print help and view command usage and options.
+   1. Type `nn --help` to print help and view command usage and options.
 
 ## Uninstallation
 
