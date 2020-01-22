@@ -25,6 +25,11 @@ directory_chooser() {
     if [[ $current_shell = 'zsh' ]]; then
 
         if [[ $1 = "-h" ]]; then
+            if [[ -z $hidden_directories ]]; then
+                echo "No directories to navigate to"
+                return 0
+            fi
+
             for d in .*/; do
                 echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m" >> "$install_dir/.directories.txt"
                 directory_list+=("$d")
