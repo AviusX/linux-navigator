@@ -18,11 +18,24 @@ If you get `permission denied`, then make the script executable by running
 chmod +x ./install.sh
 ```
 
-## How to use
+## Usage
 
-1. After installation, simple run `nn` in any directory to view all directories in your pwd.
-2. Enter the directory number to go into that directory.
-3. Once you reach your desired directory, enter any letter to stop.
+  #### General
+
+   1. After installation, simple run `nn` in any directory to view all directories in your pwd.
+   2. Enter the directory number to go into that directory.
+   3. Once you reach your desired directory, enter any letter to stop.
+   
+  #### Viewing all directories
+   1. Type `nn -a` or `nn --all` to view all directories (both hidden and non-hidden)
+   2. Navigate the same way as you would with general usage.
+   
+  #### Viewing hidden directories only
+   1. Type `nn -h` or `nn --hidden` to view hidden directories only.
+   2. Navigate the same way as you would with general usage.
+   
+  #### Viewing help
+   1. Type `nn --help` to view print help and view command usage and options.
 
 ## Uninstallation
 
