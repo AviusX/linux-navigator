@@ -10,8 +10,9 @@ Simply copy and paste the following commands one-by-one to install the tool-
 cd ~/Downloads
 git clone https://github.com/AviusX/linux-navigator/
 cd linux-navigator
-. ./install.sh
+source install.sh
 ```
+That's it! Now you can glide your way around directories with the `nn` command. See `nn --help` or see usage below.
 
 If you get `permission denied`, then make the script executable by running
 ```
@@ -27,7 +28,7 @@ chmod +x ./install.sh
    3. Once you reach your desired directory, enter any letter to stop.
    
   #### Viewing all directories
-   1. Type `nn -a` or `nn --all` to view all directories (both hidden and non-hidden)
+   1. Type `nn -a` or `nn --all` to view all directories (both hidden and non-hidden).
    2. Navigate the same way as you would with general usage.
    
   #### Viewing hidden directories only
@@ -41,9 +42,9 @@ chmod +x ./install.sh
 
 To uninstall, copy and paste the following command-
 ```
-. ~/.navigator-home/uninstall.sh
+source ~/.navigator-home/uninstall.sh
 ```
 That's it! 
 
 ### Warning!
-#### This tool sets an alias `nn` in your shell rc file to work. Feel free to change the alias to whatever you want. However, changing the tool path will result in both the main tool and uninstall script to stop working, unless you make multiple manual changes in the scripts. If you don't know how to do that, please don't change the tool's path.
+##### This tool sets an alias `nn` in your shell rc file to work. Feel free to change the alias to whatever you want. However, changing the tool path will result in both the main tool and uninstall script to stop working, unless you make multiple manual changes in the scripts. If you don't know how to do that, please don't change the tool's path.
