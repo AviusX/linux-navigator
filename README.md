@@ -47,4 +47,4 @@ source ~/.navigator-home/uninstall.sh
 That's it! 
 
 ### Warning!
-##### This tool sets an alias `nn` in your shell rc file to work. Feel free to change the alias to whatever you want. However, changing the tool path will result in both the main tool and uninstall script to stop working, unless you make multiple manual changes in the scripts. If you don't know how to do that, please don't change the tool's path.
+##### This tool sets an alias `nn` in your shell rc file to work. Feel free to change the alias to whatever you want. However, changing the tool path will result in both the main tool and uninstall script to stop working. To properly change the tool's path, you must change the `install_dir` variable (in both navigator.sh and uninstall.sh) to the new path.
