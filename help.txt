@@ -1,0 +1,12 @@
+linux-navigator
+Usage: nn [options]
+
+Providing no options displays only non-hidden folders by default.
+
+Options:
+
+    --help                      Print this help
+    -h, --hidden                Show only hidden folders     
+    -a, --all                   Show all folders (both hidden and non-hidden)
+
+Report bugs to: https://github.com/AviusX/linux-navigator/issues

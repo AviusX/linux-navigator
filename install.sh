@@ -11,6 +11,7 @@ mkdir -p "$install_dir"
 # only copy over the scripts (files) we dont need the .git files
 find . -maxdepth 1 -type f -exec cp -vuf {} $install_dir/ \;
 rm "$install_dir/install.sh"
+rm "$install_dir/README.md"
 
 install_alias() {
     # pass a shell name in e.g. bash or zsh

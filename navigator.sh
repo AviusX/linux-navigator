@@ -1,6 +1,26 @@
 #!/usr/bin/env bash
 
-# To print hidden and non-hidden directory names in different colors
+install_dir="/home/$USER/.navigator-home"
+
+# To check if correct arguments were passed and to display help.
+argument_checker() {
+    case $1 in
+        --help)
+            cat "$install_dir/help.txt"
+            return 1
+            ;;
+
+        -h | --hidden | -a | --all)
+            return 0
+            ;;
+        *)
+            echo "Invalid argument. Do nn --help to view usage."
+            return 1
+            ;;
+    esac
+
+}
+# To print hidden and non-hidden directory names in different colors.
 print_directory_names() {
     if [[ $current_shell =~ "zsh" ]]; then
         if [[ $d =~ "\..*" ]]; then
@@ -24,7 +44,7 @@ directory_chooser() {
     # If current shell is zsh, then use */ and .*/ to print directory names.
     if [[ $current_shell = 'zsh' ]]; then
 
-        if [[ $1 = "-h" ]]; then
+        if [[ $1 = "-h" || $1 = "--hidden" ]]; then
             if [[ -z $hidden_directories ]]; then
                 echo "No directories to navigate to"
                 return 0
@@ -36,7 +56,7 @@ directory_chooser() {
                 serial=$((serial+1))
             done
 
-        elif [[ $1 = "-a" ]]; then
+        elif [[ $1 = "-a" || $1 = "--all" ]]; then
             if [[ -z $non_hidden_directories && ! -z $hidden_directories ]]; then
                 for d in .*/; do
                     # Checking if directory names start from '.' or not to print hidden and non hidden directories in different colors.
@@ -73,14 +93,19 @@ directory_chooser() {
     # If current shell is bash, then use the lists made using find to print directory names
     else 
         IFS=$'\n'
-        if [[ $1 = "-h" ]]; then
+        if [[ $1 = "-h" || $1 = "--hidden" ]]; then
+            if [[ -z $hidden_directories ]]; then
+                echo "No directories to navigate to"
+                return 0
+            fi
+
             for d in $hidden_directories; do
                 echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m" >> "$install_dir/.directories.txt"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
 
-        elif [[ $1 = "-a" ]]; then
+        elif [[ $1 = "-a" || $1 = "--all" ]]; then
             if [[ -z $non_hidden_directories && ! -z $hidden_directories ]]; then
                 for d in $hidden_directories; do
                     # Checking if directory names start from '.' or not to print hidden and non hidden directories in different colors.
@@ -119,7 +144,6 @@ directory_chooser() {
 navigator() {
     local serial=1
     local directory_list=("#")
-    local install_dir="/home/$USER/.navigator-home"
     local current_shell=$(ps -p $$ -ocomm=)
 
     # Indicating pwd since it can get confusing during recursive use (powerline style)
@@ -175,4 +199,9 @@ navigator() {
     navigator $1
 }
 
-navigator $1
+if [[ $# -ne 0 ]]; then
+    argument_checker $1 && navigator $1
+    return 0
+else
+    navigator
+fi
