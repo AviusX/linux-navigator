@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-install_dir="/home/$USER/.navigator-home"
+install_dir="$HOME/.navigator-home"
 
 # To check if correct arguments were passed and to display help.
 argument_checker() {

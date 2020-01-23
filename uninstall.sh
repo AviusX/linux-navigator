@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-install_dir="/home/$USER/.navigator-home"
+install_dir="$HOME/.navigator-home"
 
 if [[ -e ~/.zshrc ]]; then
 
