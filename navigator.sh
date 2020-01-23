@@ -85,6 +85,7 @@ directory_chooser() {
         else
             if [[ -z $non_hidden_directories ]]; then
                 echo "No non hidden directories available. Use nn -h to view hidden directories, if any."
+                return 0
             fi
 
             for d in */; do
