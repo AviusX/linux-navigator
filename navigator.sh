@@ -46,7 +46,7 @@ directory_chooser() {
 
         if [[ $1 = "-h" || $1 = "--hidden" ]]; then
             if [[ -z $hidden_directories ]]; then
-                echo "No directories to navigate to"
+                echo "No hidden directories to navigate to. Use nn -a to view all directories, if any."
                 return 0
             fi
 
@@ -83,6 +83,10 @@ directory_chooser() {
             fi
 
         else
+            if [[ -z $non_hidden_directories ]]; then
+                echo "No non hidden directories available. Use nn -h to view hidden directories, if any."
+            fi
+
             for d in */; do
                 echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m" >> "$install_dir/.directories.txt"
                 directory_list+=("$d")
