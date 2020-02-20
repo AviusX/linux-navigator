@@ -1,0 +1,4 @@
+1. The value of "serial" as incremented by the "directory_chooser" variable is not preserved when piped to the "column" command.
+    This does not happen when the directory_chooser on line 186 is not piped to column. 
+    
+    The value of serial not getting updated causes the else statement on line 204 to get executed since the condition on line 195 is always false.
