@@ -24,34 +24,45 @@ argument_checker() {
 print_directory_names() {
     if [[ $current_shell =~ "zsh" ]]; then
         if [[ $d =~ "\..*" ]]; then
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m" >> "$install_dir/.directories.txt"                
+            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
         else                                                                                                                    
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m" >> "$install_dir/.directories.txt"                
+            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
         fi                                                                                                                      
     else
         if [[ $d =~ ^\..*$ ]]; then
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m" >> "$install_dir/.directories.txt"                
+            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
         else                                                                                                                    
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m" >> "$install_dir/.directories.txt"                
+            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
         fi                                                                                                                      
     fi
+}
+
+# To print the heading and the back option.
+print_heading() {
+    # Printing the heading-
+    echo -e "\e[31mNo.\t \tDirectory\e[0m"
 }
 
 # To specify arguments to display hidden or all directories, if needed, and to print directories in different ways for zsh and bash.
 directory_chooser() {
     local current_shell=$(ps -p $$ -ocomm=)
+    
+    # If the current directory isn't / then display the option to back using 0.
+    if [[ "$PWD" != "/" && ! -z $non_hidden_directories ]]; then
+        echo -e "\e[33m0\t---------------\t\e[0m\e[1m\e[34m..\e[0m"
+    fi
 
     # If current shell is zsh, then use */ and .*/ to print directory names.
     if [[ $current_shell = 'zsh' ]]; then
 
         if [[ $1 = "-h" || $1 = "--hidden" ]]; then
             if [[ -z $hidden_directories ]]; then
-                echo "No hidden directories to navigate to. Use nn -a to view all directories, if any."
+                echo -e "No hidden directories to navigate to. Use nn to view all non-hidden directories, if any. Use 0 to go back to the previous directory.\n\n"
                 return 0
             fi
 
             for d in .*/; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m" >> "$install_dir/.directories.txt"
+                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -73,23 +84,35 @@ directory_chooser() {
                     serial=$((serial+1))
                 done
 
+            elif [[ -z $non_hidden_directories && -z $hidden_directories ]]; then
+		echo "No directories to navigate to. Enter 0 to go back to the previous directory."
+
             else
-                for d in $(echo */ && echo .*/); do
-                    # Checking if directory names start from '.' or not to print hidden and non hidden directories in different colors.
-                    print_directory_names
-                    directory_list+=("$d")
-                    serial=$((serial+1))
-                done
+                if [[ ! -z $non_hidden_directories && -z $hidden_directories ]]; then
+                    for d in */; do
+                        # Checking if directory names start from '.' or not to print hidden and non hidden directories in different colors.
+                        print_directory_names
+                        directory_list+=("$d")
+                        serial=$((serial+1))
+                    done
+		else
+                    for d in $(echo */ && echo .*/); do
+                        # Checking if directory names start from '.' or not to print hidden and non hidden directories in different colors.
+                        print_directory_names
+                        directory_list+=("$d")
+                        serial=$((serial+1))
+                    done
+		fi
             fi
 
         else
             if [[ -z $non_hidden_directories ]]; then
-                echo "No non hidden directories available. Use nn -h to view hidden directories, if any."
+                echo -e "No non hidden directories available. Use nn -h to view hidden directories, if any. Enter 0 to go back to the previous directory."
                 return 0
             fi
 
             for d in */; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m" >> "$install_dir/.directories.txt"
+                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -100,12 +123,12 @@ directory_chooser() {
         IFS=$'\n'
         if [[ $1 = "-h" || $1 = "--hidden" ]]; then
             if [[ -z $hidden_directories ]]; then
-                echo "No directories to navigate to"
+                echo -e "No directories to navigate to\n"
                 return 0
             fi
 
             for d in $hidden_directories; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m" >> "$install_dir/.directories.txt"
+                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -137,7 +160,7 @@ directory_chooser() {
             fi
         else
             for d in $non_hidden_directories; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m" >> "$install_dir/.directories.txt"
+                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -155,8 +178,6 @@ navigator() {
 
     echo -e "\n\e[100m\e[97m current directory \e[0m\e[90m\e[44m\e[0m\e[44m\e[30m$PWD \e[0m\e[34m\e[0m\n"
 
-    echo -e "\e[31mNo.\t \tDirectory\e[0m" > "$install_dir/.directories.txt"
-
     local directories=$(find . -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort)
     local hidden_directories=$(find . -maxdepth 1 -regex ".*/\.+.*" -type d -exec basename {} \; | sort)
     local non_hidden_directories=$(find . -maxdepth 1 -regex ".*/[^\.].+" -type d -exec basename {} \; | sort)
@@ -171,16 +192,9 @@ navigator() {
     #     return 0
     # fi
 
-    if [[ "$PWD" != "/" ]]; then
-        echo -e "\e[33m0\t---------------\t\e[0m\e[1m\e[34m..\e[0m" >> "$install_dir/.directories.txt"
-    fi
+    directory_chooser $1 > >( { column -t -s $'\t'; echo "Enter the directory number (s to stop)- "; } )
 
-    directory_chooser $1
-
-    cat "$install_dir/.directories.txt" | column -t -s $'\t'
-    rm "$install_dir/.directories.txt"
-    
-    echo "Enter the directory number (s to stop)- " && read -r number
+    read -r number
 
     # Entering any letter(s) stops the script, leaving the user in the last chosen directory.
     if [[ $number =~ [A-Za-z]+ ]]; then
