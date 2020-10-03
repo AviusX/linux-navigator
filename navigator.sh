@@ -2,6 +2,15 @@
 
 install_dir="$HOME/.navigator-home"
 
+DEFAULT="\e[0m"
+DEFAULTBOLD="\e[1m"
+
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+MAGENTA="\e[35m"
+
 # To check if correct arguments were passed and to display help.
 argument_checker() {
     case $1 in
@@ -24,15 +33,15 @@ argument_checker() {
 print_directory_names() {
     if [[ $current_shell =~ "zsh" ]]; then
         if [[ $d =~ "\..*" ]]; then
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
+            echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${MAGENTA}$d${DEFAULT}"
         else                                                                                                                    
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
+            echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}$d${DEFAULT}"
         fi                                                                                                                      
     else
         if [[ $d =~ ^\..*$ ]]; then
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
+            echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${MAGENTA}$d${DEFAULT}"
         else                                                                                                                    
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
+            echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}$d${DEFAULT}"
         fi                                                                                                                      
     fi
 }
@@ -40,7 +49,7 @@ print_directory_names() {
 # To print the heading and the back option.
 print_heading() {
     # Printing the heading-
-    echo -e "\e[31mNo.\t \tDirectory\e[0m"
+    echo -e "${RED}No.\t \tDirectory${DEFAULT}"
 }
 
 # To specify arguments to display hidden or all directories, if needed, and to print directories in different ways for zsh and bash.
@@ -49,7 +58,7 @@ directory_chooser() {
     
     # If the current directory isn't / then display the option to back using 0.
     if [[ "$PWD" != "/" && ! -z $non_hidden_directories ]]; then
-        echo -e "\e[33m0\t---------------\t\e[0m\e[1m\e[34m..\e[0m"
+        echo -e "${YELLOW}0\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}..${DEFAULT}"
     fi
 
     # If current shell is zsh, then use */ and .*/ to print directory names.
@@ -62,7 +71,7 @@ directory_chooser() {
             fi
 
             for d in .*/; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
+                echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${MAGENTA}$d${DEFAULT}"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -112,7 +121,7 @@ directory_chooser() {
             fi
 
             for d in */; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
+                echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}$d${DEFAULT}"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -128,7 +137,7 @@ directory_chooser() {
             fi
 
             for d in $hidden_directories; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
+                echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${MAGENTA}$d${DEFAULT}"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -160,7 +169,7 @@ directory_chooser() {
             fi
         else
             for d in $non_hidden_directories; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
+                echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}$d${DEFAULT}"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -176,7 +185,7 @@ navigator() {
 
     # Indicating pwd since it can get confusing during recursive use (powerline style)
 
-    echo -e "\n\e[100m\e[97m current directory \e[0m\e[90m\e[44m\e[0m\e[44m\e[30m$PWD \e[0m\e[34m\e[0m\n"
+    echo -e "\n\e[100m\e[97m current directory ${DEFAULT}\e[90m\e[44m${DEFAULT}\e[44m\e[30m$PWD ${DEFAULT}${BLUE}${DEFAULT}\n"
 
     local directories=$(find . -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort)
     local hidden_directories=$(find . -maxdepth 1 -regex ".*/\.+.*" -type d -exec basename {} \; | sort)
