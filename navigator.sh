@@ -201,17 +201,22 @@ navigator() {
     #     return 0
     # fi
 
-    directory_chooser $1 > >( { column -t -s $'\t'; echo "Enter the directory number (s to stop)- "; } )
+    directory_chooser $1 > >( { column -t -s $'\t'; printf "Enter the directory number (s to stop)\n${GREEN}|-> ${DEFAULT} "; } )
 
     read -r number
 
     # Entering any letter(s) stops the script, leaving the user in the last chosen directory.
-    if [[ $number =~ [A-Za-z]+ ]]; then
-        return 0
+    # if [[ $number =~ [A-Za-z]+ ]]; then
+    #     return 0
+    # fi
+
+    if [[ "$number" == "c" ]]; then
+    	clear
+	navigator
     fi
-    
+
     if [[ "$number" -ge 0 && "$number" -lt $serial ]] 2>/dev/null; then
-        if [[ "$number" -eq 0 && "$PWD" != "/" ]]; then
+        if [[ "$number" == "0" && "$PWD" != "/" ]]; then
             cd ..
 
         else
