@@ -196,23 +196,49 @@ navigator() {
         return 0
     fi
     
-    # if [[ -z $directories ]]; then
-    #     echo No subdirectories to navigate to
-    #     return 0
-    # fi
-
     directory_chooser $1 > >( { column -t -s $'\t'; printf "Enter the directory number (s to stop)\n${GREEN}|-> ${DEFAULT} "; } )
 
     read -r number
-
-    # Entering any letter(s) stops the script, leaving the user in the last chosen directory.
-    # if [[ $number =~ [A-Za-z]+ ]]; then
-    #     return 0
-    # fi
+	
+    if [[ "$number" == "s" ]]; then
+    	cd $PWD
+	exec $SHELL
+	exit
+    	
+    fi
 
     if [[ "$number" == "c" ]]; then
     	clear
 	navigator
+    fi
+
+    if [[ "$number" == "f" ]]; then
+    	files=$(ls -al | grep "drwx" -v | awk '{print $9}')
+	clear
+	echo -e "Files in ${BLUE}$(pwd)${DEFAULT}:\n"
+	for file in $files; do
+		if [[ -x $file ]]; then
+			EXEC="Executable"
+			COLOR=${GREEN}
+		else
+			EXEC="          "
+			COLOR=${DEFAULT}
+		fi
+
+		if [[ -w $file ]]; then
+			WRT="Writable"
+		else
+			WRT="        "
+		fi
+
+		if [[ -r $file ]]; then
+			READ="Readable"
+		else
+			READ="        "
+		fi
+
+		echo -e "${EXEC} - ${WRT} - ${READ} : ${COLOR}$file${DEFAULT}"
+	done
     fi
 
     if [[ "$number" -ge 0 && "$number" -lt $serial ]] 2>/dev/null; then
@@ -221,7 +247,8 @@ navigator() {
 
         else
             [[ $current_shell =~ 'zsh' ]] && number=$((number+1))
-            [[ -d "${directory_list[number]}" ]] && cd "${directory_list[number]}" || echo "Failed to change directory"
+	    cd "${directory_list[number]}" 2> /dev/null
+            # [[ -d "${directory_list[number]}" ]] && cd "${directory_list[number]}" || echo "Failed to change directory"
         fi
 
     else
