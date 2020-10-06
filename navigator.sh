@@ -223,6 +223,9 @@ navigator() {
 	free_mem=$(echo $data | awk '{print $2}')
 	echo -e "${YELLOW}\t\tTotal\t\tUsed\t\tFree${DEFAULT}"
 	echo -e "\t\t${total}\t\t${used}\t\t${free_mem}"
+	echo -e "\n${GREEN}Kernel:${DEFAULT}${YELLOW} $(uname -r)${DEFAULT}"
+	echo -e "\n${GREEN}Shell:${DEFAULT}${YELLOW} $SHELL${DEFAULT}"
+	echo ""
 	read -p ""
 	clear
 	navigator
