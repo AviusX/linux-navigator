@@ -276,7 +276,6 @@ navigator() {
         else
             [[ $current_shell =~ 'zsh' ]] && number=$((number+1))
 	    cd "${directory_list[number]}" 2> /dev/null
-            # [[ -d "${directory_list[number]}" ]] && cd "${directory_list[number]}" || echo "Failed to change directory"
         fi
 
     else
