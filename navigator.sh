@@ -196,7 +196,7 @@ navigator() {
         return 0
     fi
     
-    directory_chooser $1 > >( { column -t -s $'\t'; printf "Enter the directory number (s to stop)\n${GREEN}|-> ${DEFAULT} "; } )
+    directory_chooser $1 > >( { column -t -s $'\t'; printf "Enter the directory number (s to stop)\n${GREEN}|-> ${DEFAULT}"; } )
 
     read -r number
 	
@@ -209,6 +209,22 @@ navigator() {
 
     if [[ "$number" == "c" ]]; then
     	clear
+	navigator
+    fi
+
+    if [[ "$number" == "d" ]]; then
+    	clear
+	echo -e "\n${GREEN}Memory:${DEFAULT}"
+	data=$(free -h | awk '{print $2}')
+	total=$(echo $data | awk '{print $2}')
+	data=$(free -h | awk '{print $3}')
+	used=$(echo $data | awk '{print $2}')
+	data=$(free -h | awk '{print $4}')
+	free_mem=$(echo $data | awk '{print $2}')
+	echo -e "${YELLOW}\t\tTotal\t\tUsed\t\tFree${DEFAULT}"
+	echo -e "\t\t${total}\t\t${used}\t\t${free_mem}"
+	read -p ""
+	clear
 	navigator
     fi
 
