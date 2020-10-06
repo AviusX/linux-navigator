@@ -207,6 +207,15 @@ navigator() {
     	
     fi
 
+    if [[ "$number" == "h" ]]; then
+    	clear
+	echo "Use these commands inside the navigator: "
+	echo -e "c\t\t\tclears the screen"
+	echo -e "d\t\t\tbrings up a system info dashboard"
+	echo -e "f\t\t\tshows the files belonging to the current directory"
+	navigator
+    fi
+
     if [[ "$number" == "c" ]]; then
     	clear
 	navigator
