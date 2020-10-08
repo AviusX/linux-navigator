@@ -202,8 +202,7 @@ navigator() {
 	
     if [[ "$number" == "s" ]]; then
     	cd $PWD
-	exec $SHELL
-	exit
+	return 0;
     	
     fi
 
