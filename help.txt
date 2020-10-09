@@ -9,4 +9,6 @@ Options:
     -h, --hidden                Show only hidden folders     
     -a, --all                   Show all folders (both hidden and non-hidden)
 
+Use "h" inside the navigator to bring up a menu of in-built commands.
+
 Report bugs to: https://github.com/AviusX/linux-navigator/issues

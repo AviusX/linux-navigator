@@ -2,6 +2,15 @@
 
 install_dir="$HOME/.navigator-home"
 
+DEFAULT="\e[0m"
+DEFAULTBOLD="\e[1m"
+
+RED="\e[31m"
+GREEN="\e[32m"
+YELLOW="\e[33m"
+BLUE="\e[34m"
+MAGENTA="\e[35m"
+
 # To check if correct arguments were passed and to display help.
 argument_checker() {
     case $1 in
@@ -24,15 +33,15 @@ argument_checker() {
 print_directory_names() {
     if [[ $current_shell =~ "zsh" ]]; then
         if [[ $d =~ "\..*" ]]; then
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
+            echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${MAGENTA}$d${DEFAULT}"
         else                                                                                                                    
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
+            echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}$d${DEFAULT}"
         fi                                                                                                                      
     else
         if [[ $d =~ ^\..*$ ]]; then
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
+            echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${MAGENTA}$d${DEFAULT}"
         else                                                                                                                    
-            echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
+            echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}$d${DEFAULT}"
         fi                                                                                                                      
     fi
 }
@@ -40,7 +49,7 @@ print_directory_names() {
 # To print the heading and the back option.
 print_heading() {
     # Printing the heading-
-    echo -e "\e[31mNo.\t \tDirectory\e[0m"
+    echo -e "${RED}No.\t \tDirectory${DEFAULT}"
 }
 
 # To specify arguments to display hidden or all directories, if needed, and to print directories in different ways for zsh and bash.
@@ -49,7 +58,7 @@ directory_chooser() {
     
     # If the current directory isn't / then display the option to back using 0.
     if [[ "$PWD" != "/" && ! -z $non_hidden_directories ]]; then
-        echo -e "\e[33m0\t---------------\t\e[0m\e[1m\e[34m..\e[0m"
+        echo -e "${YELLOW}0\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}..${DEFAULT}"
     fi
 
     # If current shell is zsh, then use */ and .*/ to print directory names.
@@ -62,7 +71,7 @@ directory_chooser() {
             fi
 
             for d in .*/; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
+                echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${MAGENTA}$d${DEFAULT}"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -112,7 +121,7 @@ directory_chooser() {
             fi
 
             for d in */; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
+                echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}$d${DEFAULT}"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -128,7 +137,7 @@ directory_chooser() {
             fi
 
             for d in $hidden_directories; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[35m$d\e[0m"
+                echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${MAGENTA}$d${DEFAULT}"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -160,7 +169,7 @@ directory_chooser() {
             fi
         else
             for d in $non_hidden_directories; do
-                echo -e "\e[33m$serial\t---------------\t\e[0m\e[1m\e[34m$d\e[0m"
+                echo -e "${YELLOW}$serial\t---------------\t${DEFAULT}${DEFAULTBOLD}${BLUE}$d${DEFAULT}"
                 directory_list+=("$d")
                 serial=$((serial+1))
             done
@@ -176,7 +185,7 @@ navigator() {
 
     # Indicating pwd since it can get confusing during recursive use (powerline style)
 
-    echo -e "\n\e[100m\e[97m current directory \e[0m\e[90m\e[44m\e[0m\e[44m\e[30m$PWD \e[0m\e[34m\e[0m\n"
+    echo -e "\n\e[100m\e[97m current directory ${DEFAULT}\e[90m\e[44m${DEFAULT}\e[44m\e[30m$PWD ${DEFAULT}${BLUE}${DEFAULT}\n"
 
     local directories=$(find . -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort)
     local hidden_directories=$(find . -maxdepth 1 -regex ".*/\.+.*" -type d -exec basename {} \; | sort)
@@ -187,27 +196,85 @@ navigator() {
         return 0
     fi
     
-    # if [[ -z $directories ]]; then
-    #     echo No subdirectories to navigate to
-    #     return 0
-    # fi
-
-    directory_chooser $1 > >( { column -t -s $'\t'; echo "Enter the directory number (s to stop)- "; } )
+    directory_chooser $1 > >( { column -t -s $'\t'; printf "Enter the directory number (s to stop)\n${GREEN}|-> ${DEFAULT}"; } )
 
     read -r number
-
-    # Entering any letter(s) stops the script, leaving the user in the last chosen directory.
-    if [[ $number =~ [A-Za-z]+ ]]; then
-        return 0
+	
+    if [[ "$number" == "s" ]]; then
+    	cd $PWD
+	return 0;
+    	
     fi
-    
+
+    if [[ "$number" == "h" ]]; then
+    	clear
+	echo "Use these commands inside the navigator: "
+	echo -e "c\t\t\tclears the screen"
+	echo -e "d\t\t\tbrings up a system info dashboard"
+	echo -e "f\t\t\tshows the files belonging to the current directory"
+	navigator
+    fi
+
+    if [[ "$number" == "c" ]]; then
+    	clear
+	navigator
+    fi
+
+    if [[ "$number" == "d" ]]; then
+    	clear
+	echo -e "\n${GREEN}Memory:${DEFAULT}"
+	data=$(free -h | awk '{print $2}')
+	total=$(echo $data | awk '{print $2}')
+	data=$(free -h | awk '{print $3}')
+	used=$(echo $data | awk '{print $2}')
+	data=$(free -h | awk '{print $4}')
+	free_mem=$(echo $data | awk '{print $2}')
+	echo -e "${YELLOW}\t\tTotal\t\tUsed\t\tFree${DEFAULT}"
+	echo -e "\t\t${total}\t\t${used}\t\t${free_mem}"
+	echo -e "\n${GREEN}Kernel:${DEFAULT}${YELLOW} $(uname -r)${DEFAULT}"
+	echo -e "\n${GREEN}Shell:${DEFAULT}${YELLOW} $SHELL${DEFAULT}"
+	echo ""
+	read -p ""
+	clear
+	navigator
+    fi
+
+    if [[ "$number" == "f" ]]; then
+    	files=$(ls -al | grep "drwx" -v | awk '{print $9}')
+	clear
+	echo -e "Files in ${BLUE}$(pwd)${DEFAULT}:\n"
+	for file in $files; do
+		if [[ -x $file ]]; then
+			EXEC="Executable"
+			COLOR=${GREEN}
+		else
+			EXEC="          "
+			COLOR=${DEFAULT}
+		fi
+
+		if [[ -w $file ]]; then
+			WRT="Writable"
+		else
+			WRT="        "
+		fi
+
+		if [[ -r $file ]]; then
+			READ="Readable"
+		else
+			READ="        "
+		fi
+
+		echo -e "${EXEC} - ${WRT} - ${READ} : ${COLOR}$file${DEFAULT}"
+	done
+    fi
+
     if [[ "$number" -ge 0 && "$number" -lt $serial ]] 2>/dev/null; then
-        if [[ "$number" -eq 0 && "$PWD" != "/" ]]; then
+        if [[ "$number" == "0" && "$PWD" != "/" ]]; then
             cd ..
 
         else
             [[ $current_shell =~ 'zsh' ]] && number=$((number+1))
-            [[ -d "${directory_list[number]}" ]] && cd "${directory_list[number]}" || echo "Failed to change directory"
+	    cd "${directory_list[number]}" 2> /dev/null
         fi
 
     else
